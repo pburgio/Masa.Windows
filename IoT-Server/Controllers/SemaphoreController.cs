@@ -1,4 +1,5 @@
 ﻿using IoT_Server.Helpers;
+using IoT_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,29 @@ using System.Web.Http;
 
 namespace IoT_Server.Controllers
 {
-    [RoutePrefix("api/semaphore")]
+    //[RoutePrefix("api/semaphore")]
     public class SemaphoreController : ApiController
     {
-        [Route("reportstate")]
+        [Route("api/semaphore/{semaphoreId}")]
         [HttpPost]
         [RequireHttps]
-        public IHttpActionResult ReportState()
+        [Authorize]
+        public IHttpActionResult ReportStatus(string semaphoreId, [FromBody] SemaphoreStatus body)
         {
-            return Ok();
-        } // ReportState
+            if (User == null || User.Identity == null || string.IsNullOrEmpty(User.Identity.Name))
+                return Unauthorized();
+            var userId = User.Identity.Name; // sem1
+
+            return Ok("ciao");
+        } // ReportStatus
+
+        //[Route("api/semaphore/{semaphoreId}")]
+        //[HttpGet]
+        //[RequireHttps]
+        //public IHttpActionResult GetStatus(string semaphoreId)
+        //{
+        //    return Ok();
+        //} // GetStatus
 
         [Route("pullcmd")]
         [HttpPost]
