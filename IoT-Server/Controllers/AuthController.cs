@@ -17,6 +17,14 @@ namespace IoT_Server.Controllers
         [RequireHttps]
         public IHttpActionResult Post([FromBody] TokenChallenge challenge)
         {
+            var enabled = false;
+            bool.TryParse(ConfigurationManager.AppSettings["TokensEpEnabled"], out enabled);
+
+            if(!enabled)
+            {
+                return NotFound();
+            }
+
             var secret = ConfigurationManager.AppSettings["TokensSecret"];
             var expiration = 365;
             if (challenge == null ||

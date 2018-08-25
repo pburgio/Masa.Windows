@@ -12,34 +12,34 @@ namespace IoT_Server.Controllers
     //[RoutePrefix("api/semaphore")]
     public class SemaphoreController : ApiController
     {
-        [Route("api/semaphore/{semaphoreId}")]
+        [Route("api/semaphore/{semaphoreId}/status")]
         [HttpPost]
         [RequireHttps]
         [Authorize]
-        public IHttpActionResult ReportStatus(string semaphoreId, [FromBody] SemaphoreStatus body)
+        public IHttpActionResult Status_Post(string semaphoreId, [FromBody] SemaphoreStatus body)
         {
             if (User == null || User.Identity == null || string.IsNullOrEmpty(User.Identity.Name))
                 return Unauthorized();
             var userId = User.Identity.Name; // sem1
 
-            return Ok("ciao");
-        } // ReportStatus
+            return Ok("POST RESPONSE");
+        } // Status_Post
 
-        //[Route("api/semaphore/{semaphoreId}")]
-        //[HttpGet]
-        //[RequireHttps]
-        //public IHttpActionResult GetStatus(string semaphoreId)
-        //{
-        //    return Ok();
-        //} // GetStatus
-
-        [Route("pullcmd")]
-        [HttpPost]
+        [Route("api/semaphore/{semaphoreId}/status")]
+        [HttpGet]
         [RequireHttps]
-        public IHttpActionResult PullCmd()
+        public IHttpActionResult Status_Get(string semaphoreId)
+        {
+            return Ok("GET RESPONSE");
+        } // GetStatus
+
+        [Route("api/semaphore/{semaphoreId}/cmd")]
+        [HttpGet]
+        [RequireHttps]
+        public IHttpActionResult Cmd()
         {
             return Ok();
-        } // PullCmd
+        } // Cmd
 
     } // class
 } // ns
