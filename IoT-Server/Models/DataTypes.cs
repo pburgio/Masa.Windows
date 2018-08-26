@@ -16,10 +16,24 @@ namespace IoT_Server.Models
         }
     } // ListResponse
 
+    public enum SemaphoreMode { Manual = 0, DrivenByPhase = 1, BlinkingYellow = 2 };
+    public enum SemaphoreState { Off = 0, Green = 1, GreenYellow = 2, Red = 3, RedYellow = 4 };
+
     public class SemaphoreStatus
     {
+        [JsonProperty(PropertyName = "id")]
+        public string Id;
+        // Can remove this
         [JsonProperty(PropertyName = "status")]
         public string Status;
+
+        [JsonProperty(PropertyName = "phase")]
+        public int Phase;
+        [JsonProperty(PropertyName = "tl_mode")]
+        public SemaphoreMode TlMode;
+        [JsonProperty(PropertyName = "tl_state")]
+        public SemaphoreState TlState;
+
     } // SemaphoreStatus
 
     public class TokenChallenge

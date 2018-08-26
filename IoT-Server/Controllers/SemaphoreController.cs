@@ -22,7 +22,7 @@ namespace IoT_Server.Controllers
                 return Unauthorized();
             var userId = User.Identity.Name; // sem1
 
-            return Ok("POST RESPONSE");
+            return Ok("POST RESPONSE @" + DateTime.Now);
         } // Status_Post
 
         [Route("api/semaphore/{semaphoreId}/status")]
@@ -30,7 +30,7 @@ namespace IoT_Server.Controllers
         [RequireHttps]
         public IHttpActionResult Status_Get(string semaphoreId)
         {
-            return Ok("GET RESPONSE");
+            return Ok("GET RESPONSE @" + DateTime.Now);
         } // GetStatus
 
         [Route("api/semaphore/{semaphoreId}/cmd")]
