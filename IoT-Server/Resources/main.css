@@ -1966,7 +1966,7 @@
 		/* Banner */
 
 			#banner {
-				padding: 1em 0 3.5em 0;
+				padding: 1em 0 1em 0;
 			}
 
 				#banner h2 {
@@ -2562,7 +2562,11 @@
 
 .panel {
     background-image: none;
-    //background-color: red;
+    /**/background-color: red; */
     color: white;
 
+}
+
+.myselect {
+    width: 250px;
 }

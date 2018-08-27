@@ -254,6 +254,16 @@
     <Content Include="Resources\comunedimodena.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Lights\green.gif" />
+    <Content Include="Resources\Lights\off.gif" />
+    <Content Include="Resources\Lights\red-yellow-green.gif" />
+    <Content Include="Resources\Lights\red-yellow.gif" />
+    <Content Include="Resources\Lights\red.gif" />
+    <Content Include="Resources\Lights\test.html" />
+    <Content Include="Resources\Lights\Traffic_lights_3_states.svg.png" />
+    <Content Include="Resources\Lights\yellow-blinking.gif" />
+    <Content Include="Resources\Lights\yellow-green.gif" />
+    <Content Include="Resources\Lights\yellow.gif" />
     <Content Include="Resources\logo-masa.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -269,7 +279,7 @@
     <Content Include="Resources\ministeroinfrastrutture.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\paolo.js">
+    <Content Include="Resources\library.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\rer.jpg">
@@ -308,13 +318,14 @@
     <Content Include="Resources\util.js.download">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Lights\TrafficLights.psd" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Semaphore.html" />
+    <Content Include="Lights.html" />
     <Content Include="ServerLog.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

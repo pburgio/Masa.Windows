@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>MODENA AUTOMOTIVE SMART AREA</title>
+
+    <link rel="stylesheet" href="./Resources/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <script src="./Resources/library.js"></script>
+    <script>
+        function OnLoad() {
+            setInterval(function () {
+                var name = $("#semNameLabel").text();
+
+                //alert('Get info for semaphore ' + name);
+                HttpCall(urlBase + "/api/semaphore/" + name + "/status", 'GET', "", function (res) {
+                    //debugger;
+                    // TODO
+                    //$('#imgLights').attr('src', imgBase + '/yellow-blinking.gif');
+                    //$('#selPhase').val(master);
+                });
+            }, 3000);
+
+            $('#btnSubmit').on('click', function (event) {
+                var imgBase = "./Resources/Lights/";
+
+                var key = $('#textKey').val();
+                var master = $('#selMaster').find("option:selected").val();
+                var phase = $('#selPhase').find("option:selected").val();
+                var mode = $('#selMode').find("option:selected").val();
+                var state = $('#selState').find("option:selected").val();
+
+                //alert(key+master+phase+mode+state);
+
+            });
+        }
+    </script>
+</head>
+
+<body class="homepage" onload="OnLoad()">
+    <div id="page-wrapper">
+        <img src="./Resources/logo-masa.png" class="logocomune" alt="loghi">
+        <!-- Header -->
+        <header id="header">
+            <div class="logo container">
+                <div>
+                    <p>MODENA AUTOMOTIVE SMART AREA -- </p>
+                    <h1>TRAFFIC LIGHT '<label id="semNameLabel">sem1</label> (TLA1)'</h1>
+                </div>
+            </div>
+        </header>
+        <!-- Banner -->
+        <div id="banner-wrapper">
+            <section id="banner" style="width:20%; float:left; text-align:left; padding-left:20px">
+
+                <div class="form-group btn btn-secondary myselect">
+                    <label for="textKey">Key</label><br />
+                    <input type="password" id="textKey" style="width:220px" />
+                </div>
+                <br />
+
+                <div class="form-group btn btn-primary myselect">
+                    <label for="selMaster">Master</label>
+                    <select class="form-control" id="selMaster">
+                        <option value="1">Server</option>
+                        <option value="2">Modbus</option>
+                        <option value="3">Internal</option>
+                    </select>
+                </div>
+                <br />
+
+                <div class="form-group btn btn-success myselect">
+                    <label for="selPhase">Phase</label>
+                    <select class="form-control" id="selPhase">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+                <br />
+
+                <div class="form-group btn btn-warning myselect">
+                    <label for="selMode">Mode</label>
+                    <select class="form-control" id="selMode">
+                        <option value="0">Manual</option>
+                        <option value="1">Driven by Phase</option>
+                        <option value="2">Blinking yellow</option>
+                    </select>
+                </div>
+                <br />
+
+                <div class="form-group btn btn-info myselect">
+                    <label for="selState">State</label>
+                    <select class="form-control" id="selState">
+                        <option value="0">Off</option>
+                        <option value="1">Green</option>
+                        <option value="2">Green + yellow</option>
+                        <option value="3">Red</option>
+                        <option value="4">Red + yellow</option>
+                    </select>
+                </div>
+                <br /><br />
+
+                <button type="button" id="btnSubmit" class="btn btn-danger myselect">Save</button>
+            </section>
+            <div style="text-align:center">
+                <img src="./Resources/Lights/off.gif" id="imgLights" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
