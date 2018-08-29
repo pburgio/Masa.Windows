@@ -18,6 +18,7 @@ namespace IoT_Server.Models
 
     public enum SemaphoreMode { Manual = 0, DrivenByPhase = 1, BlinkingYellow = 2 };
     public enum SemaphoreState { Off = 0, Green = 1, GreenYellow = 2, Red = 3, RedYellow = 4 };
+    public enum SemaphoreCtrl { Server = 1, Modbus = 2, Internal = 3 };
 
     public class SemaphoreStatus
     {
@@ -33,6 +34,8 @@ namespace IoT_Server.Models
         public SemaphoreMode TlMode;
         [JsonProperty(PropertyName = "tl_state")]
         public SemaphoreState TlState;
+        [JsonProperty(PropertyName = "ctrl_type")]
+        public SemaphoreState CtrlType;
 
     } // SemaphoreStatus
 

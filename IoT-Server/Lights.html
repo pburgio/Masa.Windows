@@ -22,7 +22,13 @@
                     //debugger;
                     // TODO
                     //$('#imgLights').attr('src', imgBase + '/yellow-blinking.gif');
-                    //$('#selPhase').val(master);
+                    //debugger;
+                    //alert(res.id);
+                    //alert(res.status);
+                    //alert(res.phase);
+                    //alert(res.tl_mode);
+                    //alert(res.tl_state);
+                    $('#selMaster').val(res.ctrl_type);
                 });
             }, 3000);
 
@@ -34,6 +40,7 @@
                 var phase = $('#selPhase').find("option:selected").val();
                 var mode = $('#selMode').find("option:selected").val();
                 var state = $('#selState').find("option:selected").val();
+                $('#imgLights').attr('src', imgBase + '/yellow-blinking.gif');
 
                 //alert(key+master+phase+mode+state);
 
@@ -67,9 +74,9 @@
                 <div class="form-group btn btn-primary myselect">
                     <label for="selMaster">Master</label>
                     <select class="form-control" id="selMaster">
-                        <option value="1">Server</option>
-                        <option value="2">Modbus</option>
-                        <option value="3">Internal</option>
+                        <option value="0">Server</option>
+                        <option value="1">Modbus</option>
+                        <option value="2">Internal</option>
                     </select>
                 </div>
                 <br />

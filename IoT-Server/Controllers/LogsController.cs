@@ -27,7 +27,7 @@ namespace IoT_Server.Controllers
         [RequireHttps]
         public IHttpActionResult GetLogs()
         {
-            Log("Nuovo log " + (i++));
+            //Log("Nuovo log " + (i++));
             return Ok(new ListResponse()
             {
                 Rows = logs
