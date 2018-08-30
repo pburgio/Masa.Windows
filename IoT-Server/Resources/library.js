@@ -1,6 +1,17 @@
 var urlBase = "https://backend-dev5.iotty.com";
+var imgBase = "./Resources/Lights/";
 
-function HttpCall(url, verb, dataObj, success) {
+
+function GetHttpError(xhr){
+	switch(xhr.statusCode().status) {
+		case 401: return "Unauthorized";
+		case 403: return "Forbidden";
+		case 404: return "Not found";
+		case 500: return "Internal server error";
+	}
+}
+
+function HttpCall(url, verb, dataObj, success, error) {
 	//debugger;
 	
     $.support.cors = true;
@@ -8,13 +19,12 @@ function HttpCall(url, verb, dataObj, success) {
         url: url,
         type: verb,
         contentType: "application/json",
-		//data: JSON.stringify({ jsonRequest: dataObj }),
+		data: JSON.stringify(dataObj),
 		success: function (response) {
 			success(response);
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-            //debugger;
-			alert("ERRORE DI COMUNICAZIONE COL SERVER");
+            alert("Il server ha risposto: errore " + xhr.statusCode().status + " - " + GetHttpError(xhr));
         }
         
     });

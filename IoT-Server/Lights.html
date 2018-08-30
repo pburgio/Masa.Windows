@@ -13,38 +13,164 @@
 
     <script src="./Resources/library.js"></script>
     <script>
+
+        function enable(name, onoff) {
+            if (!onoff) {
+                $(name).attr('disabled', 'disabled');
+            } else {
+                $(name).removeAttr('disabled');
+            }
+        }
+        function selMaster_OnChange() {
+            var selMaster = $('#selMaster').val();
+            
+            enable("#selState", selMaster == 1);
+        }
+
+        function log(msg) {
+
+            $('#logLabel').text(msg);
+        }
+
+		function GetImageByTlState(tl_state) {
+			switch (tl_state) {
+				case 0:
+					return "off.gif";
+				case 1:
+					return "green.gif";
+				case 2:
+					return "yellow-green.gif";
+				case 3:
+					return "red.gif";
+				case 4:
+					return "red-yellow.gif";
+			}
+		}
+		
+        function GetImage(status) {
+
+            //log(status.ctrl_type + " " + status.tl_state);
+            switch (status.ctrl_type) {
+                case 0: // Unknown
+                    return "off.gif";					
+					
+                case 1: // Server
+					return GetImageByTlState(status.tl_state);
+					
+                case 2: // Modbus
+					switch(status.tl_mode)
+					{
+						case 0:
+							return GetImageByTlState(status.tl_state);
+						case 1:						
+							// Only tla1
+							switch (status.phase) {
+								case 0:
+									return "off.gif";
+									
+								case 1:
+									return "green.gif";
+									
+								case 2:
+								case 6:
+									return "yellow-green.gif";
+									
+								case 3:
+								case 4:
+									return "red.gif";
+									
+								case 5:
+									return "yellow.gif";
+									
+								case 7:
+									return "red-yellow.gif";
+							}
+						case 2:
+								return "yellow-blinking.gif";
+						
+					}
+                    break;
+					
+                case 3: // Internal
+						return GetImageByTlState(status.tl_state);
+            }
+
+
+        }
+		
+		function GetSelectValue(name, key) {
+			return $(name + ' option[value="' + key + '"]').html();
+		}
+		
+		function UpdateSemStatus(res) {
+			//log("id: " + res.id +
+			//    " - master: " + res.ctrl_type +
+			//    " - tl_state: " + res.tl_state +
+			//    " - phase: " + res.phase +
+			//    " - tl_mode: " + res.tl_mode +
+			//    " - status: " + res.status + 
+			//    " - image: " + img);
+
+			<!-- $('#selMaster').val(res.ctrl_type); -->
+			<!-- $('#selState').val(res.tl_state); -->
+			<!-- $('#selPhase').val(res.phase); -->
+			<!-- $('#selMode').val(res.tl_mode); -->
+			
+			$('#lblMaster').html(GetSelectValue('#selMaster', res.ctrl_type));
+			$('#lblState').html(GetSelectValue('#selState', res.tl_state));
+			$('#lblPhase').html(GetSelectValue('#selPhase', res.phase));
+			$('#lblMode').html(GetSelectValue('#selMode', res.tl_mode));
+		}
+		
         function OnLoad() {
             setInterval(function () {
                 var name = $("#semNameLabel").text();
 
                 //alert('Get info for semaphore ' + name);
                 HttpCall(urlBase + "/api/semaphore/" + name + "/status", 'GET', "", function (res) {
-                    //debugger;
-                    // TODO
-                    //$('#imgLights').attr('src', imgBase + '/yellow-blinking.gif');
-                    //debugger;
-                    //alert(res.id);
-                    //alert(res.status);
-                    //alert(res.phase);
-                    //alert(res.tl_mode);
-                    //alert(res.tl_state);
-                    $('#selMaster').val(res.ctrl_type);
+
+                    var img = GetImage(res);
+                    
+					
+                    $('#imgLights').attr('src', imgBase + '/' + img);
+					UpdateSemStatus(res);
                 });
-            }, 3000);
+            }, 300);
 
             $('#btnSubmit').on('click', function (event) {
-                var imgBase = "./Resources/Lights/";
-
+			
+                var name = $("#semNameLabel").text();
                 var key = $('#textKey').val();
                 var master = $('#selMaster').find("option:selected").val();
+                var tl_state = $('#selState').find("option:selected").val();
                 var phase = $('#selPhase').find("option:selected").val();
-                var mode = $('#selMode').find("option:selected").val();
-                var state = $('#selState').find("option:selected").val();
-                $('#imgLights').attr('src', imgBase + '/yellow-blinking.gif');
+                var tl_mode = $('#selMode').find("option:selected").val();
+
+				/*
+                var postBody = "{ " +
+                                    "\"key\" : \"" + key + "\", " +
+                                    "\"status\" : { " + 
+			                            "\"id\" : \"" + name + "\", " +
+			                            "\"tl_state\" : \"" + tl_state + " \", " +
+                                        "\"ctrl_type\" : \"" + master + "\"" +
+                                    " }" +
+                                " }";
+				*/
+				var obj = new Object();
+				obj.key = key;
+				obj.status = new Object();
+				obj.status.id = name;
+				obj.status.ctrl_type = master;
+				obj.status.tl_state = tl_state;
+				
+                HttpCall(urlBase + "/api/semaphore/" + name + "/ctrl", 'POST', obj, function (res) {
+                    log("OK");
+                });
 
                 //alert(key+master+phase+mode+state);
 
             });
+            selMaster_OnChange();
         }
     </script>
 </head>
@@ -62,9 +188,16 @@
             </div>
         </header>
         <!-- Banner -->
+        <div class="container">
+            <span class="label label-info" id="logLabel">No logs</span>
+        </div>
         <div id="banner-wrapper">
-            <section id="banner" style="width:20%; float:left; text-align:left; padding-left:20px">
+            <section id="banner" style="width:15%; float:left; text-align:left; padding-left:20px">
 
+
+                <button type="button" id="btnSubmit" class="btn btn-danger myselect">Save</button>
+                <br /><br />
+				
                 <div class="form-group btn btn-secondary myselect">
                     <label for="textKey">Key</label><br />
                     <input type="password" id="textKey" style="width:220px" />
@@ -72,18 +205,31 @@
                 <br />
 
                 <div class="form-group btn btn-primary myselect">
-                    <label for="selMaster">Master</label>
-                    <select class="form-control" id="selMaster">
-                        <option value="0">Server</option>
-                        <option value="1">Modbus</option>
-                        <option value="2">Internal</option>
+                    Master: <label id="lblMaster" for="selMaster"></label>
+                    <select class="form-control" id="selMaster" onchange="selMaster_OnChange()">
+                        <option value="0">Unknown</option>
+                        <option value="1">Server</option>
+                        <option value="2">Modbus</option>
+                        <option value="3">Internal</option>
+                    </select>
+                </div>
+                <br />
+
+                <div class="form-group btn btn-info myselect">
+                    State: <label id="lblState" for="selState"></label>
+                    <select class="form-control" id="selState" disabled>
+                        <option value="0">Off</option>
+                        <option value="1">Green</option>
+                        <option value="2">Green + yellow</option>
+                        <option value="3">Red</option>
+                        <option value="4">Red + yellow</option>
                     </select>
                 </div>
                 <br />
 
                 <div class="form-group btn btn-success myselect">
-                    <label for="selPhase">Phase</label>
-                    <select class="form-control" id="selPhase">
+                    Phase: <label id="lblPhase" for="selPhase"></label>
+                    <select class="form-control" id="selPhase" disabled>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -96,28 +242,13 @@
                 <br />
 
                 <div class="form-group btn btn-warning myselect">
-                    <label for="selMode">Mode</label>
-                    <select class="form-control" id="selMode">
+                    Mode: <label id="lblMode" for="selMode"></label>
+                    <select class="form-control" id="selMode" disabled>
                         <option value="0">Manual</option>
                         <option value="1">Driven by Phase</option>
                         <option value="2">Blinking yellow</option>
                     </select>
                 </div>
-                <br />
-
-                <div class="form-group btn btn-info myselect">
-                    <label for="selState">State</label>
-                    <select class="form-control" id="selState">
-                        <option value="0">Off</option>
-                        <option value="1">Green</option>
-                        <option value="2">Green + yellow</option>
-                        <option value="3">Red</option>
-                        <option value="4">Red + yellow</option>
-                    </select>
-                </div>
-                <br /><br />
-
-                <button type="button" id="btnSubmit" class="btn btn-danger myselect">Save</button>
             </section>
             <div style="text-align:center">
                 <img src="./Resources/Lights/off.gif" id="imgLights" />

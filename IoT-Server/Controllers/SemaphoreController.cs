@@ -12,7 +12,7 @@ namespace IoT_Server.Controllers
     public class SemaphoreController : ApiController
     {
         protected static IDictionary<string, SemaphoreStatus> semStatus = new Dictionary<string, SemaphoreStatus>();
-        protected static IDictionary<string, SemaphoreStatus> semCtrl = new Dictionary<string, SemaphoreStatus>();
+        protected static IDictionary<string, SemaphoreCtrl> semCtrl = new Dictionary<string, SemaphoreCtrl>();
         
 
         [Route("api/semaphore/{semId}/status")]
@@ -31,9 +31,9 @@ namespace IoT_Server.Controllers
                 semStatus.Remove(semId);
             semStatus.Add(semId, status);
 
-            LogsController.Log("Semaphore '" + semId + " changed its status");
+            //LogsController.Log("Semaphore '" + semId + " changed its status");
 
-            return Ok(); // TODO remove
+            return Ok();
         } // Status_Post
 
         [Route("api/semaphore/{semId}/status")]
@@ -45,7 +45,10 @@ namespace IoT_Server.Controllers
                 return BadRequest();
 
             if (!semStatus.ContainsKey(semId))
-                return Ok("");
+                semStatus.Add(semId, new SemaphoreStatus()
+                {
+                    CtrlType = SemaporeMaster.Unknown
+                });
 
             var ret = semStatus[semId];
             return Ok(ret);
@@ -53,21 +56,18 @@ namespace IoT_Server.Controllers
 
         [Route("api/semaphore/{semId}/ctrl")]
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         [RequireHttps]
-        public IHttpActionResult Ctrl_Post(string semId, [FromBody] SemaphoreStatus status)
+        public IHttpActionResult Ctrl_Post(string semId, [FromBody] SemaphoreCtrl ctrl)
         {
-            if (User == null ||
-                   User.Identity == null ||
-                   string.IsNullOrEmpty(User.Identity.Name) ||
-                   !string.Equals(semId, User.Identity.Name))
+            if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals("pr0gramm1ng", ctrl.Key))
                 return Unauthorized();
 
             if (semCtrl.ContainsKey(semId))
                 semCtrl.Remove(semId);
-            semCtrl.Add(semId, status);
+            semCtrl.Add(semId, ctrl);
 
-            LogsController.Log("Semaphore '" + semId + " programmed");
+            LogsController.Log("Semaphore '" + semId + "' programmed");
 
             return Ok();
         } // Ctrl_Post
@@ -84,7 +84,7 @@ namespace IoT_Server.Controllers
                 return Ok("");
 
             var ret = semCtrl[semId];
-            semCtrl.Remove(semId);
+
             return Ok(ret);
         } // Ctrl_Get
 
