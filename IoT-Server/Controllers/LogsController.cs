@@ -21,13 +21,11 @@ namespace IoT_Server.Controllers
             logs.Insert(0,"[" + DateTime.Now + "] " + str);
         }
 
-        static int i = 0;
         [Route("api/logs")]
         [HttpGet]
         [RequireHttps]
         public IHttpActionResult GetLogs()
         {
-            //Log("Nuovo log " + (i++));
             return Ok(new ListResponse()
             {
                 Rows = logs

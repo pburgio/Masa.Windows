@@ -87,16 +87,14 @@
 							}
 						case 2:
 								return "yellow-blinking.gif";
-						
 					}
                     break;
 					
                 case 3: // Internal
-						return GetImageByTlState(status.tl_state);
-            }
-
-
-        }
+                    return GetImageByTlState(status.tl_state);
+                    break;
+            } // switch
+        } // fn
 		
 		function GetSelectValue(name, key) {
 			return $(name + ' option[value="' + key + '"]').html();
@@ -110,12 +108,7 @@
 			//    " - tl_mode: " + res.tl_mode +
 			//    " - status: " + res.status + 
 			//    " - image: " + img);
-
-			<!-- $('#selMaster').val(res.ctrl_type); -->
-			<!-- $('#selState').val(res.tl_state); -->
-			<!-- $('#selPhase').val(res.phase); -->
-			<!-- $('#selMode').val(res.tl_mode); -->
-			
+            			
 			$('#lblMaster').html(GetSelectValue('#selMaster', res.ctrl_type));
 			$('#lblState').html(GetSelectValue('#selState', res.tl_state));
 			$('#lblPhase').html(GetSelectValue('#selPhase', res.phase));
@@ -207,7 +200,7 @@
                 <div class="form-group btn btn-primary myselect">
                     Master: <label id="lblMaster" for="selMaster"></label>
                     <select class="form-control" id="selMaster" onchange="selMaster_OnChange()">
-                        <option value="0">Unknown</option>
+                        <!--<option value="0">Unknown</option>-->
                         <option value="1">Server</option>
                         <option value="2">Modbus</option>
                         <option value="3">Internal</option>
