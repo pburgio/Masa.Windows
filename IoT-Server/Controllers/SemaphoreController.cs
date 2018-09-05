@@ -14,7 +14,6 @@ namespace IoT_Server.Controllers
         protected static IDictionary<string, SemaphoreStatus> semStatus = new Dictionary<string, SemaphoreStatus>();
         protected static IDictionary<string, SemaphoreCtrl> semCtrl = new Dictionary<string, SemaphoreCtrl>();
         
-
         [Route("api/semaphore/{semId}/status")]
         [HttpPost]
         [RequireHttps]

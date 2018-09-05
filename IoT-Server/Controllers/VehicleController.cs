@@ -1,4 +1,5 @@
 ﻿using IoT_Server.Helpers;
+using IoT_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,6 @@ using System.Web.Http;
 
 namespace IoT_Server.Controllers
 {
-    [RoutePrefix("api/vehicle")]
     public class VehicleController : ApiController
     {
         [Route("api/vehicle/{vehicleId}/ctrl")]
@@ -28,7 +28,12 @@ namespace IoT_Server.Controllers
 
             return Ok();
         } // Ctrl_Post
-        
+
+        public static IDictionary<string, int> vehicleControllers = new Dictionary<string, int>()
+        {
+            { "car1", -1 }
+        };
+
         [Route("api/vehicle/{vehicleId}/ctrl")]
         [HttpGet]
         [RequireHttps]
@@ -37,28 +42,26 @@ namespace IoT_Server.Controllers
             if (string.IsNullOrEmpty(vehicleId))
                 return BadRequest();
 
-            //if (!semCtrl.ContainsKey(semId))
-            //    return Ok("");
+            if (!vehicleControllers.ContainsKey(vehicleId))
+                return Ok(-1);
 
-            //var ret = semCtrl[semId];
+            var ret = vehicleControllers[vehicleId];
 
-            return Ok("-1");
+            return Ok(ret);
         } // Ctrl_Get
 
         [Route("api/vehicle/{vehicleId}/position")]
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [RequireHttps]
-        public IHttpActionResult Position_Post(string vehicleId, [FromBody] string ctrl)
+        public IHttpActionResult Position_Post(string vehicleId, [FromBody] VehiclePosition position)
         {
-            //if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals("pr0gramm1ng", ctrl.Key))
-            //    return Unauthorized();
+            if (string.IsNullOrEmpty(vehicleId) || string.IsNullOrEmpty(position.Name))
+                return BadRequest();
+            
 
-            //if (semCtrl.ContainsKey(semId))
-            //    semCtrl.Remove(semId);
-            //semCtrl.Add(semId, ctrl);
-
-            //LogsController.Log("Semaphore '" + semId + "' programmed");
+            LogsController.Log("Vehicle '" + vehicleId + "' reported its position at { Lat: " + position.Latitude + 
+                " - Lng: " + position.Longitude + " }");
 
             return Ok();
         } // Position_Post

@@ -232,6 +232,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
+    <Compile Include="Controllers\ParkingController.cs" />
     <Compile Include="Controllers\SemaphoreController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Global.asax.cs">

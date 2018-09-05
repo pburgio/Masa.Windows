@@ -55,4 +55,17 @@ namespace IoT_Server.Models
         public string Secret;
     } // TokenChallenge
 
+    public class VehiclePosition : Position
+    {
+        [JsonProperty(PropertyName = "name")]
+        public string Name;
+    } // TokenChallenge
+    public class Position
+    {
+        [JsonProperty(PropertyName = "lat")]
+        public double Latitude;
+        [JsonProperty(PropertyName = "lng")]
+        public double Longitude;
+    }
+
 } // ns
