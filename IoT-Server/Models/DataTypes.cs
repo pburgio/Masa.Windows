@@ -36,6 +36,8 @@ namespace IoT_Server.Models
         public SemaphoreState TlState;
         [JsonProperty(PropertyName = "ctrl_type")]
         public SemaporeMaster CtrlType;
+        [JsonProperty(PropertyName = "time_to_change")]
+        public int TimeToChange;
 
     } // SemaphoreStatus
 
