@@ -17,14 +17,14 @@ namespace IoT_Server.Controllers
         [Route("api/semaphore/{semId}/status")]
         [HttpPost]
         [RequireHttps]
-        [Authorize]
+        //[Authorize]
         public IHttpActionResult Status_Post(string semId, [FromBody] SemaphoreStatus status)
         {
-            if (User == null ||
-                   User.Identity == null ||
-                   string.IsNullOrEmpty(User.Identity.Name) ||
-                   !string.Equals(semId, User.Identity.Name))
-                return Unauthorized();
+            //if (User == null ||
+            //       User.Identity == null ||
+            //       string.IsNullOrEmpty(User.Identity.Name) ||
+            //       !string.Equals(semId, User.Identity.Name))
+            //    return Unauthorized();
 
             if (semStatus.ContainsKey(semId))
                 semStatus.Remove(semId);

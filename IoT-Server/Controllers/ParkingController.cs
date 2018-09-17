@@ -27,7 +27,7 @@ namespace IoT_Server.Controllers
         [Route("api/parking")]
         [HttpPost]
         [RequireHttps]
-        [Authorize]
+        //[Authorize]
         public IHttpActionResult Parking_Post([FromBody] VehiclePosition request)
         {
             // TODO check auth

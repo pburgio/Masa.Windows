@@ -1,4 +1,5 @@
-var urlBase = "https://backend-dev5.iotty.com";
+//var urlBase = "http://backend-dev5.iotty.com";
+var urlBase = "http://192.168.10.236";
 var imgBase = "./Resources/Lights/";
 
 

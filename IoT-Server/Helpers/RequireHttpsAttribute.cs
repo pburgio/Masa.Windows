@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -13,7 +14,8 @@ namespace IoT_Server.Helpers
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)
+            var requireHttps = bool.Parse(ConfigurationManager.AppSettings["RequireHttps"]);
+            if (requireHttps && actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)
             {
                 actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden)
                 {
