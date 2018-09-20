@@ -1,5 +1,5 @@
-//var urlBase = "http://backend-dev5.iotty.com";
-var urlBase = "http://192.168.10.236";
+var urlBase = "http://backend-dev5.iotty.com";
+//var urlBase = "http://192.168.10.236";
 var imgBase = "./Resources/Lights/";
 
 
@@ -25,7 +25,7 @@ function HttpCall(url, verb, dataObj, success, error) {
 			success(response);
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-            alert("Il server ha risposto: errore " + xhr.statusCode().status + " - " + GetHttpError(xhr));
+            //alert("Il server ha risposto: errore " + xhr.statusCode().status + " - " + GetHttpError(xhr));
         }
         
     });

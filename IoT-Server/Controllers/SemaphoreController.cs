@@ -32,9 +32,9 @@ namespace IoT_Server.Controllers
 
             //LogsController.Log("Semaphore '" + semId + " changed its status");
 
-            return Ok();
+            return Ctrl_Get(semId);
         } // Status_Post
-
+        
         [Route("api/semaphore/{semId}/status")]
         [HttpGet]
         [RequireHttps]
@@ -64,6 +64,8 @@ namespace IoT_Server.Controllers
 
             if (semCtrl.ContainsKey(semId))
                 semCtrl.Remove(semId);
+
+            ctrl.Key = string.Empty; // Not to shout our pwd all around the world...
             semCtrl.Add(semId, ctrl);
 
             LogsController.Log("Semaphore '" + semId + "' programmed");

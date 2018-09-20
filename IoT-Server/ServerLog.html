@@ -20,9 +20,18 @@
                 HttpCall(urlBase + "/api/logs", 'GET', "", function (res) {
 
                     $("#logpanel").empty();
-                    for (var i = 0; i < res.Rows.length; i++) {
+                    for (var i = 0; i < res.length; i++) {
 
-                        $("#logpanel").append(res.Rows[i] + "<br />");
+                        $("#logpanel").append(res[i] + "<br />");
+                    }
+
+                });
+				HttpCall(urlBase + "/api/vehicle/all/position", 'GET', "", function (res) {
+
+                    $("#vehiclespanel").empty();
+                    for (var i = 0; i < res.length; i++) {
+
+                        $("#vehiclespanel").append(JSON.stringify(res[i]) + "<br />");
                     }
 
                 });
@@ -39,31 +48,39 @@
 			<div class="logo container">
 				<div>
 					<p>MODENA AUTOMOTIVE SMART AREA -- </p>
-					<h1>SERVER LOG</h1>
+					<h1>SERVER</h1>
 				</div>
 			</div>
 		</header>
 
 		<!-- Banner -->
-		<div id="banner-wrapper">
+        <div id="banner-wrapper" style="text-align:center">
+            <h2>LOGS</h2>
+            <br />
+            <section id="banner">
+                <!-- <button type="button" class="btn btn-primary">Primary</button> -->
+                <!-- <button type="button" class="btn btn-secondary">Secondary</button> -->
+                <!-- <button type="button" class="btn btn-success">Success</button> -->
+                <!-- <button type="button" class="btn btn-danger">Danger</button> -->
+                <!-- <button type="button" class="btn btn-warning">Warning</button> -->
+                <!-- <button type="button" class="btn btn-info">Info</button> -->
+                <!-- <button type="button" class="btn btn-light">Light</button> -->
+                <!-- <button type="button" class="btn btn-dark">Dark</button> -->
+                <!-- <button type="button" class="btn btn-link">Link</button> -->
+                <div class="panel panel-default">
+                    <div class="panel-body" id="logpanel"><i>No logs </i></div>
+                </div>
+            </section>
+            <br />
+            <br />
+            <br />
+            <h2>KNOWN VEHICLES</h2>
+            <br />
+            <div class="panel-default" style="text-align:center">
+                <div class="panel-body" id="vehiclespanel"><i>No known vehicles </i></div>
+            </div>
 
-			<section id="banner">
-				<!-- <button type="button" class="btn btn-primary">Primary</button> -->
-				<!-- <button type="button" class="btn btn-secondary">Secondary</button> -->
-				<!-- <button type="button" class="btn btn-success">Success</button> -->
-				<!-- <button type="button" class="btn btn-danger">Danger</button> -->
-				<!-- <button type="button" class="btn btn-warning">Warning</button> -->
-				<!-- <button type="button" class="btn btn-info">Info</button> -->
-				<!-- <button type="button" class="btn btn-light">Light</button> -->
-				<!-- <button type="button" class="btn btn-dark">Dark</button> -->
-
-				<!-- <button type="button" class="btn btn-link">Link</button> -->
-				<div class="panel panel-default">
-					<div class="panel-body" id="logpanel"><i>No logs </i></div>
-				</div>
-			<label>
-			</section>
-		</div>
+        </div>
 
 	</div>
 

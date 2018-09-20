@@ -17,16 +17,16 @@ namespace IoT_Server.Models
     } // ListResponse
 
     public enum SemaphoreMode { Manual = 0, DrivenByPhase = 1, BlinkingYellow = 2 };
-    public enum SemaphoreState { Off = 0, Green = 1, GreenYellow = 2, Red = 3, RedYellow = 4 };
+    public enum SemaphoreState { Off = 0, Green = 1, GreenYellow = 2, Red = 3, RedYellow = 4, Blinking = 10 };
     public enum SemaporeMaster { Unknown = 0, Server = 1, Modbus = 2, Internal = 3 };
-
+    
     public class SemaphoreStatus
     {
         [JsonProperty(PropertyName = "id")]
         public string Id;
         // Can remove this
         [JsonProperty(PropertyName = "status")]
-        public string Status;
+        public SemaphoreState Status;
 
         [JsonProperty(PropertyName = "phase")]
         public int Phase;
@@ -57,17 +57,44 @@ namespace IoT_Server.Models
         public string Secret;
     } // TokenChallenge
 
-    public class VehiclePosition : Position
+    public class VehiclePosition
     {
         [JsonProperty(PropertyName = "name")]
         public string Name;
+        [JsonProperty(PropertyName = "position")]
+        public Position Position;
+
+        public static IList<VehiclePosition> FromDictionary(IDictionary<string, Position> positions)
+        {
+            var ret = new List<VehiclePosition>();
+
+            foreach(var p in positions)
+                ret.Add(new VehiclePosition()
+                {
+                    Name = p.Key,
+                    Position = p.Value
+                });
+
+            return ret;
+        }
     } // TokenChallenge
+
     public class Position
     {
         [JsonProperty(PropertyName = "lat")]
-        public double Latitude;
+        public double Latitude { get; set; }
         [JsonProperty(PropertyName = "lng")]
-        public double Longitude;
+        public double Longitude { get; set; }
+    }
+
+    public class VehicleCtrl
+    {
+        [JsonProperty(PropertyName = "name")]
+        public string Name;
+        [JsonProperty(PropertyName = "path")]
+        public int Path;
+        [JsonProperty(PropertyName = "key")]
+        public string Key;
     }
 
 } // ns

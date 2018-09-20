@@ -23,7 +23,7 @@
         }
         function selMaster_OnChange() {
             var selMaster = $('#selMaster').val();
-            
+
             enable("#selState", selMaster == 1);
         }
 
@@ -46,42 +46,42 @@
 					return "red-yellow.gif";
 			}
 		}
-		
+
         function GetImage(status) {
 
             //log(status.ctrl_type + " " + status.tl_state);
             switch (status.ctrl_type) {
                 case 0: // Unknown
-                    return "off.gif";					
-					
+                    return "off.gif";
+
                 case 1: // Server
 					return GetImageByTlState(status.tl_state);
-					
+
                 case 2: // Modbus
 					switch(status.tl_mode)
 					{
 						case 0:
 							return GetImageByTlState(status.tl_state);
-						case 1:						
+						case 1:
 							// Only tla1
 							switch (status.phase) {
 								case 0:
 									return "off.gif";
-									
+
 								case 1:
 									return "green.gif";
-									
+
 								case 2:
 								case 6:
 									return "yellow-green.gif";
-									
+
 								case 3:
 								case 4:
 									return "red.gif";
-									
+
 								case 5:
                                     return "yellow-blinking.gif";
-									
+
 								case 7:
 									return "red-yellow.gif";
 							}
@@ -89,31 +89,27 @@
 								return "yellow-blinking.gif";
 					}
                     break;
-					
+
                 case 3: // Internal
                     return GetImageByTlState(status.tl_state);
                     break;
             } // switch
         } // fn
-		
+
 		function GetSelectValue(name, key) {
 			return $(name + ' option[value="' + key + '"]').html();
 		}
-		
+
 		function UpdateSemStatus(res) {
 			//log("id: " + res.id +
 			//    " - master: " + res.ctrl_type +
 			//    " - tl_state: " + res.tl_state +
 			//    " - phase: " + res.phase +
 			//    " - tl_mode: " + res.tl_mode +
-			//    " - status: " + res.status + 
+			//    " - status: " + res.status +
 			//    " - image: " + img);
-            			
-			$('#lblMaster').html(GetSelectValue('#selMaster', res.ctrl_type));
-			$('#lblState').html(GetSelectValue('#selState', res.tl_state));
-			$('#lblPhase').html(GetSelectValue('#selPhase', res.phase));
-			$('#lblMode').html(GetSelectValue('#selMode', res.tl_mode));
-		}		
+
+		}
 
         var img = "";
         function OnLoad() {
@@ -123,40 +119,23 @@
                 //alert('Get info for semaphore ' + name);
                 HttpCall(urlBase + "/api/semaphore/" + name + "/status", 'GET', "", function (res) {
 
-                    var oldimg = img;
-                    img = GetImage(res);
-                    if (oldimg != img)
-                        $('#imgLights').attr('src', imgBase + '/' + img);
-                    UpdateSemStatus(res);
+                   
+                    $('#lblCtrl').html(GetSelectValue('#selCtrl', res.ctrl_type));
                 });
             }, 300);
 
             $('#btnSubmit').on('click', function (event) {
-			
+
                 var name = $("#semNameLabel").text();
                 var key = $('#textKey').val();
-                var master = $('#selMaster').find("option:selected").val();
-                var tl_state = $('#selState').find("option:selected").val();
-                var phase = $('#selPhase').find("option:selected").val();
-                var tl_mode = $('#selMode').find("option:selected").val();
+                var ctrl = $('#selCtrl').find("option:selected").val();
 
-				/*
-                var postBody = "{ " +
-                                    "\"key\" : \"" + key + "\", " +
-                                    "\"status\" : { " + 
-			                            "\"id\" : \"" + name + "\", " +
-			                            "\"tl_state\" : \"" + tl_state + " \", " +
-                                        "\"ctrl_type\" : \"" + master + "\"" +
-                                    " }" +
-                                " }";
-				*/
 				var obj = new Object();
 				obj.key = key;
 				obj.status = new Object();
 				obj.status.id = name;
 				obj.status.ctrl_type = master;
-				obj.status.tl_state = tl_state;
-				
+
                 HttpCall(urlBase + "/api/semaphore/" + name + "/ctrl", 'POST', obj, function (res) {
                     log("OK");
                 });
@@ -177,21 +156,19 @@
             <div class="logo container">
                 <div>
                     <p>MODENA AUTOMOTIVE SMART AREA -- </p>
-                    <h1>TRAFFIC LIGHT '<label id="semNameLabel">sem1</label> (TLA1)'</h1>
+                    <h1>VEHICLE '<label id="semNameLabel">car1</label>'</h1>
                 </div>
             </div>
         </header>
         <!-- Banner -->
-        <!--<div class="container">
-            <span class="label label-info" id="logLabel">No logs</span>
-        </div>-->
+        
         <div id="banner-wrapper">
-            <section id="banner_NOSTYLE" style="width:15%; float:left; text-align:left; padding-left:20px">
+            <section id="banner" style="width:15%; float:left; text-align:left; padding-left:20px">
 
 
                 <button type="button" id="btnSubmit" class="btn btn-danger myselect">Save</button>
                 <br /><br />
-				
+
                 <div class="form-group btn btn-secondary myselect">
                     <label for="textKey">Key</label><br />
                     <input type="password" id="textKey" style="width:220px" />
@@ -199,12 +176,12 @@
                 <br />
 
                 <div class="form-group btn btn-primary myselect">
-                    Master: <label id="lblMaster" for="selMaster"></label>
-                    <select class="form-control" id="selMaster" onchange="selMaster_OnChange()">
-                        <!--<option value="0">Unknown</option>-->
-                        <option value="1">Server</option>
-                        <option value="2">Modbus</option>
-                        <option value="3">Internal</option>
+                    Master: <label id="lblCtrl" for="selCtrl"></label>
+                    <select class="form-control" id="selCtrl" onchange="selCtrl_OnChange()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
                     </select>
                 </div>
                 <br />

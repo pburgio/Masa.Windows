@@ -26,10 +26,7 @@ namespace IoT_Server.Controllers
         [RequireHttps]
         public IHttpActionResult GetLogs()
         {
-            return Ok(new ListResponse()
-            {
-                Rows = logs
-            });
+            return Ok(logs);
         } // ReportState
     }
 }
