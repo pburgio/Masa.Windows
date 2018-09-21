@@ -113,6 +113,7 @@
 			$('#lblState').html(GetSelectValue('#selState', res.tl_state));
 			$('#lblPhase').html(GetSelectValue('#selPhase', res.phase));
 			$('#lblMode').html(GetSelectValue('#selMode', res.tl_mode));
+            $('#ttcLabel').text("Change in " + res.time_to_change + " seconds");
 		}		
 
         var img = "";
@@ -243,6 +244,9 @@
                         <option value="2">Blinking yellow</option>
                     </select>-->
                 </div>
+				<div class="container">
+					<span class="label label-info" id="ttcLabel"></span>
+				</div>
             </section>
             <div style="text-align:center">
                 <img src="./Resources/Lights/off.gif" id="imgLights" />
