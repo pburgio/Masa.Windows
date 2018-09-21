@@ -37,24 +37,45 @@
                 });
             }, 3000);
         }
+
+        var key = "pr0gramm1ng"; // TODO
+        var name = "car1";
+        
+        function BtnTrafficOn_OnClick() {
+            VehicleCtrl(key, name, VEHICLE_ON_TRAFFIC);
+        }
+		
+        function BtnTrafficOff_OnClick() {
+            VehicleCtrl(key, name, VEHICLE_NORMAL_ROUTE);
+        }
     </script>
 </head>
 
 <body class="homepage" onload="OnLoad()">
-	<div id="page-wrapper">
-	<img src="./Resources/logo-masa.png" class="logocomune" alt="loghi">
-		<!-- Header -->
-		<header id="header">
-			<div class="logo container">
-				<div>
-					<p>MODENA AUTOMOTIVE SMART AREA -- </p>
-					<h1>SERVER</h1>
-				</div>
-			</div>
-		</header>
+    <div id="page-wrapper">
+        <img src="./Resources/logo-masa.png" class="logocomune" alt="loghi">
+        <!-- Header -->
+        <header id="header">
+            <div class="logo container">
+                <div>
+                    <p>MODENA AUTOMOTIVE SMART AREA -- </p>
+                    <h1>SERVER</h1>
+                </div>
+            </div>
+        </header>
 
-		<!-- Banner -->
+
+        <!-- Banner -->
         <div id="banner-wrapper" style="text-align:center">
+            <h2>SIMULATE TRAFFIC</h2>
+            <br />
+            <button type="button" id="btnTrafficOn" class="btn btn-danger" onclick="BtnTrafficOn_OnClick()">Traffic on</button>
+            &nbsp;
+            <button type="button" id="btnTrafficOff" class="btn btn-success" onclick="BtnTrafficOff_OnClick()">Traffic off</button>
+            <br />
+            <br />
+            <br />
+
             <h2>LOGS</h2>
             <br />
             <section id="banner">
@@ -82,7 +103,7 @@
 
         </div>
 
-	</div>
+    </div>
 
 </body>
 </html>

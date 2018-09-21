@@ -13,22 +13,85 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
     <script src="./Resources/library.js"></script>
+	<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7mgQ9fCZNC970MfRCOIcNhCl5Hh1yLQ4&callback=initMap" -->
+    <!-- async defer></script> -->
     <script>
         function OnLoad() {
             
+			disable("#btnReserve");
+			disable("#btnGo");
+			disable("#btnRelease");
         }
+		
+		
+		function enable(name) {
+		
+			if ($(name).hasClass('disabled')) {
+				$(name).removeClass('disabled');
+			}
+		}
+		function disable(name) {
+			// TODO this does not work
+			if (!$(name).hasClass('disabled')) {
+				$(name).addClass('disabled');
+			}
+		}
+		
+		
+		var name = "car1";
+		var parkingUrl = urlBase + "/api/parking/" + name;
+		var lat = 0.0, lng = 0.0;
         function BtnSearch_OnClick() {
+		
+			HttpCall(parkingUrl, 'GET', "", function(res) {
+				lat = res.lat;
+				lng = res.lng;
+				$("#logpanel").append("PARKING FOUND AT LAT: " + res.lat + " LNG: " + res.lng + "<br />");
+				enable("#btnReserve");
+			});
 
         }
+		
         function BtnReserve_OnClick() {
+		
+			HttpCall(parkingUrl + "?Longitude=" + lng + "&Latitude=" + lat, 'POST', "", function(res) {
+				$("#logpanel").append("PARKING RESERVED<br />");
+				enable("#btnGo");
+				enable("#btnRelease");
+			});
 
         }
+		
         function BtnGo_OnClick() {
+			var key = "pr0gramm1ng"; // TODO
+			var name = "car1";
+            VehicleCtrl(key, name, VEHICLE_GO_TO_PARK);
 
         }
+		
         function BtnRelease_OnClick() {
-
+		
+			HttpCall(parkingUrl+"/release"+ "?Longitude=" + lng + "&Latitude=" + lat, 'POST', "", function(res) {
+				$("#logpanel").append("PARKING RELEASED<br />");
+				OnLoad();
+			});
         }
+		
+		var map;
+		function initMap() {
+			map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: lat, lng: lng},
+			zoom: 8
+			});
+		}
+		
+		function addMarker(location, map) {
+		  var marker = new google.maps.Marker({
+			position: location,
+			title: 'Home Center',
+			map: map
+		  });
+		}
     </script>
 </head>
 
@@ -50,7 +113,7 @@
             <h2>SEARCH FOR A PARK</h2>
             <br />
             <button type="button" id="btnSearch" class="btn btn-primary" onclick="BtnSearch_OnClick()">Search</button>
-            <button type="button" id="btnReserve" class="btn btn-secondary" onclick="BtnReserve_OnClick()">Reserve</button>
+            <button type="button" id="btnReserve" class="btn btn-warning" onclick="BtnReserve_OnClick()">Reserve</button>
             <button type="button" id="btnGo" class="btn btn-success" onclick="BtnGo_OnClick()">Go</button>
             <button type="button" id="btnRelease" class="btn btn-danger" onclick="BtnRelease_OnClick()">Release</button>
             <!-- <button type="button" class="btn btn-warning">Warning</button> -->
@@ -58,6 +121,12 @@
             <!-- <button type="button" class="btn btn-light">Light</button> -->
             <!-- <button type="button" class="btn btn-dark">Dark</button> -->
             <!-- <button type="button" class="btn btn-link">Link</button> -->
+			<br />
+			<br />
+			<div class="panel-default">
+				<div class="panel-body" id="logpanel"></div>
+			</div>
+			<div id="map"></div>
 
         </div>
 

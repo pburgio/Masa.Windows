@@ -113,34 +113,15 @@
 
         var img = "";
         function OnLoad() {
-            setInterval(function () {
-                var name = $("#semNameLabel").text();
-
-                //alert('Get info for semaphore ' + name);
-                HttpCall(urlBase + "/api/semaphore/" + name + "/status", 'GET', "", function (res) {
-
-                   
-                    $('#lblCtrl').html(GetSelectValue('#selCtrl', res.ctrl_type));
-                });
-            }, 300);
-
+            
             $('#btnSubmit').on('click', function (event) {
 
-                var name = $("#semNameLabel").text();
+                var name = $("#nameLabel").text();
                 var key = $('#textKey').val();
-                var ctrl = $('#selCtrl').find("option:selected").val();
+                var path = $('#selPath').find("option:selected").val();
 
-				var obj = new Object();
-				obj.key = key;
-				obj.status = new Object();
-				obj.status.id = name;
-				obj.status.ctrl_type = master;
-
-                HttpCall(urlBase + "/api/semaphore/" + name + "/ctrl", 'POST', obj, function (res) {
-                    log("OK");
-                });
-
-                //alert(key+master+phase+mode+state);
+				
+				VehicleCtrl(key, name, path);
 
             });
             selMaster_OnChange();
@@ -156,7 +137,7 @@
             <div class="logo container">
                 <div>
                     <p>MODENA AUTOMOTIVE SMART AREA -- </p>
-                    <h1>VEHICLE '<label id="semNameLabel">car1</label>'</h1>
+                    <h1>VEHICLE '<label id="nameLabel">car1</label>'</h1>
                 </div>
             </div>
         </header>
@@ -176,54 +157,17 @@
                 <br />
 
                 <div class="form-group btn btn-primary myselect">
-                    Master: <label id="lblCtrl" for="selCtrl"></label>
-                    <select class="form-control" id="selCtrl" onchange="selCtrl_OnChange()">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
+                    Path: <label id="lblPath" for="selPath"></label>
+                    <select class="form-control" id="selPath" onchange="selPath_OnChange()">
+                        <option value="-1" selected>AUTO</option>
+                        <option value="0">PATH 0</option>
+                        <option value="1">PATH 1</option>
+                        <option value="2">PATH 2</option>
+                        <option value="3">PATH 3</option>
                     </select>
                 </div>
                 <br />
-
-                <div class="form-group btn btn-info myselect">
-                    State: <label id="lblState" for="selState"></label>
-                    <select class="form-control" id="selState" disabled>
-                        <option value="0">Off</option>
-                        <option value="1">Green</option>
-                        <option value="2">Green + yellow</option>
-                        <option value="3">Red</option>
-                        <option value="4">Red + yellow</option>
-                    </select>
-                </div>
-                <br />
-
-                <div class="form-group btn btn-success myselect">
-                    Phase: <label id="lblPhase" for="selPhase"></label>
-                    <!--<select class="form-control" id="selPhase" disabled>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                    </select>-->
-                </div>
-                <br />
-
-                <div class="form-group btn btn-warning myselect">
-                    Mode: <label id="lblMode" for="selMode"></label>
-                    <!--<select class="form-control" id="selMode" disabled>
-                        <option value="0">Manual</option>
-                        <option value="1">Driven by Phase</option>
-                        <option value="2">Blinking yellow</option>
-                    </select>-->
-                </div>
             </section>
-            <div style="text-align:center">
-                <img src="./Resources/Lights/off.gif" id="imgLights" />
-            </div>
         </div>
     </div>
 </body>

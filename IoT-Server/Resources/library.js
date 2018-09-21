@@ -2,6 +2,11 @@ var urlBase = "http://backend-dev5.iotty.com";
 //var urlBase = "http://192.168.10.236";
 var imgBase = "./Resources/Lights/";
 
+/* Vehicle Paths */
+var VEHICLE_GO_TO_PARK = 4;
+var VEHICLE_NORMAL_ROUTE = 5;
+var VEHICLE_ON_TRAFFIC = 6;
+
 
 function GetHttpError(xhr){
 	switch(xhr.statusCode().status) {
@@ -25,8 +30,18 @@ function HttpCall(url, verb, dataObj, success, error) {
 			success(response);
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-            //alert("Il server ha risposto: errore " + xhr.statusCode().status + " - " + GetHttpError(xhr));
+            alert("Il server ha risposto: errore " + xhr.statusCode().status + " - " + GetHttpError(xhr));
         }
         
     });
+}
+
+function VehicleCtrl(key, name, path) {
+	var obj = new Object();
+	obj.key = key;
+	obj.name = name;
+	obj.path = path;
+	HttpCall(urlBase + "/api/vehicle/" + name + "/ctrl", 'POST', obj, function (res) {
+
+	});
 }

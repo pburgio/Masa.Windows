@@ -33,12 +33,11 @@ namespace IoT_Server.Controllers
             ctrl.Key = string.Empty; // Not to shout our pwd all around the world...
             vehicleCtrl.Add(vehicleId, ctrl);
 
-            LogsController.Log("Vehicle '" + vehicleId + "' will go to path (" + ctrl.Path + ")");
+            LogsController.Log("Vehicle '" + vehicleId + "' will go to path '" + ctrl.Path + "'");
 
             return Ok();
         } // Ctrl_Post
         
-
         [Route("api/vehicle/{vehicleId}/ctrl")]
         [HttpGet]
         [RequireHttps]
@@ -50,21 +49,24 @@ namespace IoT_Server.Controllers
             ReportPosition(vehicleId, position);
 
             if (!vehicleCtrl.ContainsKey(vehicleId))
-                return Ok(-1);
+                return Ok(new VehicleCtrl()
+                {
+                    Path = -1
+                });
 
             var ret = vehicleCtrl[vehicleId];
-
-            return Ok(ret.Path);
+            ret.Name = "";
+            ret.Key = "";
+            return Ok(ret);
         } // Ctrl_Get
 
         private void ReportPosition(string vehicleId, Position position)
         {
-            //if (knownVehiclePositions.ContainsKey(vehicleId))
-            //    knownVehiclePositions.Remove(vehicleId);
-            //knownVehiclePositions.Add(vehicleId, position);
+            if (knownVehiclePositions.ContainsKey(vehicleId))
+                knownVehiclePositions.Remove(vehicleId);
+            knownVehiclePositions.Add(vehicleId, position);
 
-            //LogsController.Log("Vehicle '" + vehicleId + "' reported its position at { Lat: " + position.Latitude +
-            //    " - Lng: " + position.Longitude + " }");
+            //LogsController.Log("Vehicle '" + vehicleId + "' reported its position at { Lat: " + position.Latitude + " - Lng: " + position.Longitude + " }");
             // TODO to test
         }
 
