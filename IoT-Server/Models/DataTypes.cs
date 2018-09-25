@@ -17,7 +17,7 @@ namespace IoT_Server.Models
     } // ListResponse
 
     public enum SemaphoreMode { Manual = 0, DrivenByPhase = 1, BlinkingYellow = 2 };
-    public enum SemaphoreState { Off = 0, Green = 1, GreenYellow = 2, Red = 3, RedYellow = 4, Blinking = 10 };
+    public enum SemaphoreState { Off = 0, Green = 1, GreenYellow = 2, Red = 3, RedYellow = 4, Yellow = 5, Blinking = 10 };
     public enum SemaporeMaster { Unknown = 0, Server = 1, Modbus = 2, Internal = 3 };
     
     public class SemaphoreStatus

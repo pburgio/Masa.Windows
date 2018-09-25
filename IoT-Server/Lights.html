@@ -32,6 +32,7 @@
             $('#logLabel').text(msg);
         }
 
+
 		function GetImageByTlState(tl_state) {
 			switch (tl_state) {
 				case 0:
@@ -39,7 +40,7 @@
 				case 1:
 					return "green.gif";
 				case 2:
-					return "yellow-green.gif";
+                    return "yellow-green.gif";
 				case 3:
 					return "red.gif";
 				case 4:
@@ -72,8 +73,9 @@
 									return "green.gif";
 									
 								case 2:
-								case 6:
-									return "yellow-green.gif";
+                                case 6:
+                                    //return "yellow-green.gif";
+                                    return "yellow.gif";
 									
 								case 3:
 								case 4:
@@ -95,7 +97,7 @@
                     break;
             } // switch
         } // fn
-		
+        		
 		function GetSelectValue(name, key) {
 			return $(name + ' option[value="' + key + '"]').html();
 		}
@@ -116,6 +118,20 @@
             $('#ttcLabel').text("Change in " + res.time_to_change + " seconds");
 		}		
 
+        var LightsImage = [
+            "off.gif",              // 0
+            "green.gif",            // 1
+            "yellow-green.gif",   	// 2
+            "red.gif",              // 3
+            "red-yellow.gif",       // 4
+            //"yellow-green.gif",   // 5
+            "yellow.gif",     		// 5
+            "",   					// 6
+            "",   					// 7
+            "",   					// 8
+            "",   					// 9
+            "yellow-blinking.gif"   // 10
+        ];
         var img = "";
         function OnLoad() {
             setInterval(function () {
@@ -125,7 +141,8 @@
                 HttpCall(urlBase + "/api/semaphore/" + name + "/status", 'GET', "", function (res) {
 
                     var oldimg = img;
-                    img = GetImage(res);
+                    //img = GetImage(res);
+                    img = LightsImage[res.status];
                     if (oldimg != img)
                         $('#imgLights').attr('src', imgBase + '/' + img);
                     UpdateSemStatus(res);
@@ -218,6 +235,7 @@
                         <option value="2">Green + yellow</option>
                         <option value="3">Red</option>
                         <option value="4">Red + yellow</option>
+                        <option value="5">Yellow</option>
                     </select>
                 </div>
                 <br />
