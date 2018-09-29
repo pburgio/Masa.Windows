@@ -63,6 +63,8 @@ namespace IoT_Server.Models
         public string Name;
         [JsonProperty(PropertyName = "position")]
         public Position Position;
+        [JsonProperty(PropertyName = "friendly_name")]
+        internal string FriendlyName;
 
         public static IList<VehiclePosition> FromDictionary(IDictionary<string, Position> positions)
         {
@@ -96,5 +98,4 @@ namespace IoT_Server.Models
         [JsonProperty(PropertyName = "key")]
         public string Key;
     }
-
 } // ns

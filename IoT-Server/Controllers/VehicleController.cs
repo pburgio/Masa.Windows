@@ -2,6 +2,7 @@
 using IoT_Server.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,8 +15,8 @@ namespace IoT_Server.Controllers
         protected static IDictionary<string, VehicleCtrl> vehicleCtrl = new Dictionary<string, VehicleCtrl>();
         protected static IDictionary<string, Position> knownVehiclePositions = new Dictionary<string, Position>()
         {
-            { "prova1", new Position { Latitude = 0.0, Longitude = 1.0} },
-            { "prova2", new Position { Latitude = 2.0, Longitude = 3.0} }
+            { "FakeVehicle1", new Position { Latitude = 1.1, Longitude = 10.10} },
+            { "FakeVehicle2", new Position { Latitude = 2.2, Longitude = 20.20} }
         };
 
         [Route("api/vehicle/{vehicleId}/ctrl")]
@@ -24,7 +25,7 @@ namespace IoT_Server.Controllers
         [RequireHttps]
         public IHttpActionResult Ctrl_Post(string vehicleId, [FromBody] VehicleCtrl ctrl)
         {
-            if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals("pr0gramm1ng", ctrl.Key))
+            if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals(ConfigurationManager.AppSettings["Key"], ctrl.Key))
                 return Unauthorized();
 
             if (vehicleCtrl.ContainsKey(vehicleId))
@@ -92,20 +93,26 @@ namespace IoT_Server.Controllers
             return Ok(VehiclePosition.FromDictionary(knownVehiclePositions));
         } // Position_Get
 
+        IDictionary<string, string> knownVehicles = new Dictionary<string, string>()
+        {
+            { "car1", "Maserati 4porte (HiPeRT)" },
+            { "diogene", "Droid (Lifetouch)" },
+        };
+
         [Route("api/vehicle/{vehicleId}/position")]
         [HttpGet]
         [RequireHttps]
         public IHttpActionResult Position_Get(string vehicleId, [FromBody] string ctrl)
         {
-            //if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals("pr0gramm1ng", ctrl.Key))
-            //    return Unauthorized();
 
             if (!knownVehiclePositions.ContainsKey(vehicleId))
                 return Ok();
 
             var pos = knownVehiclePositions[vehicleId];
+
             var ret = new VehiclePosition()
             {
+                FriendlyName = knownVehicles.ContainsKey(vehicleId) ? knownVehicles[vehicleId] : vehicleId,
                 Name = vehicleId,
                 Position = pos
             };

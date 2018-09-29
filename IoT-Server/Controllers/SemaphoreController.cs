@@ -2,6 +2,7 @@
 using IoT_Server.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -59,7 +60,7 @@ namespace IoT_Server.Controllers
         [RequireHttps]
         public IHttpActionResult Ctrl_Post(string semId, [FromBody] SemaphoreCtrl ctrl)
         {
-            if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals("pr0gramm1ng", ctrl.Key))
+            if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals(ConfigurationManager.AppSettings["Key"], ctrl.Key))
                 return Unauthorized();
 
             if (semCtrl.ContainsKey(semId))

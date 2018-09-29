@@ -5,110 +5,23 @@
     <title>MODENA AUTOMOTIVE SMART AREA</title>
 
     <link rel="stylesheet" href="./Resources/main.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="./Resources/jquery.min.js"></script>
+    <link rel="stylesheet" href="./Resources/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="./Resources/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="./Resources/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
     <script src="./Resources/library.js"></script>
     <script>
 
-        function enable(name, onoff) {
-            if (!onoff) {
-                $(name).attr('disabled', 'disabled');
-            } else {
-                $(name).removeAttr('disabled');
-            }
-        }
-        function selMaster_OnChange() {
-            var selMaster = $('#selMaster').val();
-
-            enable("#selState", selMaster == 1);
-        }
 
         function log(msg) {
 
             $('#logLabel').text(msg);
         }
 
-		function GetImageByTlState(tl_state) {
-			switch (tl_state) {
-				case 0:
-					return "off.gif";
-				case 1:
-					return "green.gif";
-				case 2:
-					return "yellow-green.gif";
-				case 3:
-					return "red.gif";
-				case 4:
-					return "red-yellow.gif";
-			}
-		}
-
-        function GetImage(status) {
-
-            //log(status.ctrl_type + " " + status.tl_state);
-            switch (status.ctrl_type) {
-                case 0: // Unknown
-                    return "off.gif";
-
-                case 1: // Server
-					return GetImageByTlState(status.tl_state);
-
-                case 2: // Modbus
-					switch(status.tl_mode)
-					{
-						case 0:
-							return GetImageByTlState(status.tl_state);
-						case 1:
-							// Only tla1
-							switch (status.phase) {
-								case 0:
-									return "off.gif";
-
-								case 1:
-									return "green.gif";
-
-								case 2:
-								case 6:
-									return "yellow-green.gif";
-
-								case 3:
-								case 4:
-									return "red.gif";
-
-								case 5:
-                                    return "yellow-blinking.gif";
-
-								case 7:
-									return "red-yellow.gif";
-							}
-						case 2:
-								return "yellow-blinking.gif";
-					}
-                    break;
-
-                case 3: // Internal
-                    return GetImageByTlState(status.tl_state);
-                    break;
-            } // switch
-        } // fn
-
 		function GetSelectValue(name, key) {
 			return $(name + ' option[value="' + key + '"]').html();
-		}
-
-		function UpdateSemStatus(res) {
-			//log("id: " + res.id +
-			//    " - master: " + res.ctrl_type +
-			//    " - tl_state: " + res.tl_state +
-			//    " - phase: " + res.phase +
-			//    " - tl_mode: " + res.tl_mode +
-			//    " - status: " + res.status +
-			//    " - image: " + img);
-
 		}
 
         var img = "";

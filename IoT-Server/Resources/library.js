@@ -1,5 +1,5 @@
-var urlBase = "http://backend-dev5.iotty.com";
-//var urlBase = "http://192.168.10.236";
+//var urlBase = "http://backend-dev5.iotty.com";
+var urlBase = "http://192.168.10.236";
 var imgBase = "./Resources/Lights/";
 
 /* Vehicle Paths */
@@ -10,6 +10,7 @@ var VEHICLE_ON_TRAFFIC = 6;
 
 function GetHttpError(xhr){
 	switch(xhr.statusCode().status) {
+		case 0: return "Disconnected from server. Check your internet connection";
 		case 401: return "Unauthorized";
 		case 403: return "Forbidden";
 		case 404: return "Not found";
@@ -30,7 +31,8 @@ function HttpCall(url, verb, dataObj, success, error) {
 			success(response);
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-            alert("Il server ha risposto: errore " + xhr.statusCode().status + " - " + GetHttpError(xhr));
+			if(xhr.statusCode().status != 0)
+				alert("Il server ha risposto: errore " + xhr.statusCode().status + " - " + GetHttpError(xhr));
         }
         
     });
