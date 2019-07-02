@@ -17,7 +17,7 @@ namespace IoT_Server.Controllers
         
         [Route("api/semaphore/{semId}/status")]
         [HttpPost]
-        [RequireHttps]
+        //[RequireHttps]
         //[Authorize]
         public IHttpActionResult Status_Post(string semId, [FromBody] SemaphoreStatus status)
         {
@@ -38,7 +38,7 @@ namespace IoT_Server.Controllers
         
         [Route("api/semaphore/{semId}/status")]
         [HttpGet]
-        [RequireHttps]
+        //[RequireHttps]
         public IHttpActionResult Status_Get(string semId)
         {
             if (string.IsNullOrEmpty(semId))
@@ -57,7 +57,7 @@ namespace IoT_Server.Controllers
         [Route("api/semaphore/{semId}/ctrl")]
         [HttpPost]
         //[Authorize]
-        [RequireHttps]
+        //[RequireHttps]
         public IHttpActionResult Ctrl_Post(string semId, [FromBody] SemaphoreCtrl ctrl)
         {
             if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals(ConfigurationManager.AppSettings["Key"], ctrl.Key))
@@ -76,7 +76,7 @@ namespace IoT_Server.Controllers
 
         [Route("api/semaphore/{semId}/ctrl")]
         [HttpGet]
-        [RequireHttps]
+        //[RequireHttps]
         public IHttpActionResult Ctrl_Get(string semId)
         {
             if (string.IsNullOrEmpty(semId))

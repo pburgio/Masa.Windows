@@ -1,5 +1,5 @@
 //var urlBase = "http://backend-dev5.iotty.com";
-var urlBase = "http://192.168.10.236";
+var urlBase = "http://localhost:8080";
 var imgBase = "./Resources/Lights/";
 
 /* Vehicle Paths */
