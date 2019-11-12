@@ -21,7 +21,7 @@ namespace IoT_Server.Controllers
             logs.Insert(0,"[" + DateTime.Now + "] " + str);
         }
 
-        [Route("api/logs")]
+        //[Route("api/logs")]
         [HttpGet]
         [RequireHttps]
         public IHttpActionResult GetLogs()

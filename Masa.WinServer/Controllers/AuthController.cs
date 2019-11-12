@@ -12,7 +12,7 @@ namespace IoT_Server.Controllers
 {
     public class AuthController : ApiController
     {
-        [Route("api/tokens")]
+        //[Route("api/tokens")]
         [HttpPost]
         [RequireHttps]
         public IHttpActionResult Post([FromBody] TokenChallenge challenge)

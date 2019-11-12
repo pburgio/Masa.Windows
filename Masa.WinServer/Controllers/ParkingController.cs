@@ -12,7 +12,7 @@ namespace IoT_Server.Controllers
 {
     public class ParkingController : ApiController
     {
-        [Route("api/parking/{vehicleId}")]
+        //[Route("api/parking/{vehicleId}")]
         [HttpGet]
         [RequireHttps]
         public IHttpActionResult Parking_Get([FromUri] Position request)
@@ -25,7 +25,7 @@ namespace IoT_Server.Controllers
             return Ok(response);
         }
 
-        [Route("api/parking/{vehicleId}")]
+        //[Route("api/parking/{vehicleId}")]
         [HttpPost]
         [RequireHttps]
         //[Authorize]
@@ -35,7 +35,7 @@ namespace IoT_Server.Controllers
             return Ok();
         }
 
-        [Route("api/parking/{vehicleId}/release")]
+        //[Route("api/parking/{vehicleId}/release")]
         [HttpPost]
         //[HttpDelete] This does not work...
         [RequireHttps]

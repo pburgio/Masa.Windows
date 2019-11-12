@@ -19,7 +19,7 @@ namespace IoT_Server.Controllers
             { "FakeVehicle2", new Position { Latitude = 2.2, Longitude = 20.20} }
         };
 
-        [Route("api/vehicle/{vehicleId}/ctrl")]
+        //[Route("api/vehicle/{vehicleId}/ctrl")]
         [HttpPost]
         //[Authorize]
         [RequireHttps]
@@ -39,7 +39,7 @@ namespace IoT_Server.Controllers
             return Ok();
         } // Ctrl_Post
         
-        [Route("api/vehicle/{vehicleId}/ctrl")]
+        //[Route("api/vehicle/{vehicleId}/ctrl")]
         [HttpGet]
         [RequireHttps]
         public IHttpActionResult Ctrl_Get(string vehicleId, [FromUri] Position position)
@@ -85,7 +85,7 @@ namespace IoT_Server.Controllers
             return Ok();
         } // Position_Post
 
-        [Route("api/vehicle/all/position")]
+        //[Route("api/vehicle/all/position")]
         [HttpGet]
         [RequireHttps]
         public IHttpActionResult GetAll()
@@ -99,7 +99,7 @@ namespace IoT_Server.Controllers
             { "diogene", "Droid (Lifetouch)" },
         };
 
-        [Route("api/vehicle/{vehicleId}/position")]
+        //[Route("api/vehicle/{vehicleId}/position")]
         [HttpGet]
         [RequireHttps]
         public IHttpActionResult Position_Get(string vehicleId, [FromBody] string ctrl)
