@@ -1,4 +1,4 @@
-//var urlBase = "http://backend-dev5.iotty.com";
+//var urlBase = "https://masa.hipert.unimore.it";
 var urlBase = "http://localhost:8080";
 var imgBase = "./Resources/Lights/";
 
