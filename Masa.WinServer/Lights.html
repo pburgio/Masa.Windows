@@ -133,9 +133,47 @@
             "yellow-blinking.gif"   // 10
         ];
         var img = "";
+
+        function isEmpty(value) {
+            var ret = typeof value === 'string' && !value.trim() || typeof value === 'undefined' || value === null;
+            return ret;
+        }
+        
+        function ParseQueryString() {
+	        var query = window.location.search.substring(1);
+	        var params = query.split('&');
+	        var out = new Object();
+	
+	        params.forEach(function(p){
+		        var s = p.split('=');
+		        out[s[0]] = s[1];
+	        });
+	
+	        return out;
+        }
+        
+        var Default = new Object();
+        Default["semName"] = "sem1";
+        function MaybeLoadField(request, name) {
+            var val = "";
+            if (!isEmpty(request[name]))
+                val = decodeURIComponent(request[name]);
+            else if (!isEmpty(Default[name]))
+                val = Default[name];
+	        $('#' + name).text(val);
+        }
+
+        function LoadFields() {
+            var request = ParseQueryString();
+            MaybeLoadField(request, "semName");
+        }
+
         function OnLoad() {
+
+            LoadFields();
+
             setInterval(function () {
-                var name = $("#semNameLabel").text();
+                var name = $("#semName").text();
 
                 //alert('Get info for semaphore ' + name);
                 HttpCall(urlBase + "/api/semaphore/" + name + "/status", 'GET', "", function (res) {
@@ -151,7 +189,7 @@
 
             $('#btnSubmit').on('click', function (event) {
 			
-                var name = $("#semNameLabel").text();
+                var name = $("#semName").text();
                 var key = $('#textKey').val();
                 var master = $('#selMaster').find("option:selected").val();
                 var tl_state = $('#selState').find("option:selected").val();
@@ -195,7 +233,7 @@
             <div class="logo container">
                 <div>
                     <p>MODENA AUTOMOTIVE SMART AREA -- </p>
-                    <h1>TRAFFIC LIGHT '<label id="semNameLabel">sem1</label> (TLA1)'</h1>
+                    <h1>TRAFFIC LIGHT '<label id="semName">sem1</label> (TLA1)'</h1>
                 </div>
             </div>
         </header>
