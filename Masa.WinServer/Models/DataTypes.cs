@@ -39,6 +39,25 @@ namespace IoT_Server.Models
         [JsonProperty(PropertyName = "time_to_change")]
         public int TimeToChange;
 
+        [JsonProperty(PropertyName = "last_update_utc")]
+        public DateTime LastUpdateUTC;
+        
+        public SemaphoreStatus()
+        {
+            Reset();
+        }
+
+        public void Reset()
+        {
+            Status = SemaphoreState.Off;
+            Phase = 0;
+            TlMode = SemaphoreMode.Manual;
+            TlState = SemaphoreState.Off;
+            TimeToChange = -1;
+            CtrlType = SemaporeMaster.Unknown;
+            LastUpdateUTC = DateTime.UtcNow;
+        }
+
     } // SemaphoreStatus
 
     public class SemaphoreCtrl

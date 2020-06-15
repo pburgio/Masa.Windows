@@ -244,19 +244,14 @@
         <div id="banner-wrapper">
             <section id="banner_NOSTYLE" style="width:15%; float:left; text-align:left; padding-left:20px">
 				
-                <div class="form-group btn btn-secondary myselect">
-                    <label for="textKey">Key</label><br />
-                    <input type="password" id="textKey" style="width:220px" />
-                </div>
-                <br />
 
                 <div class="form-group btn btn-primary myselect">
                     Master: <label id="lblMaster" for="selMaster"></label>
                     <select class="form-control" id="selMaster" onchange="selMaster_OnChange()">
                         <!--<option value="0">Unknown</option>-->
                         <option value="1">Server</option>
-                        <option value="2">Modbus</option>
-                        <option value="3">Internal</option>
+                        <!--<option value="2">Modbus</option>-->
+                        <option selected value="3">Internal</option>
                     </select>
                 </div>
                 <br />
@@ -274,14 +269,19 @@
                 </div>
                 <br />
 
-                <div class="form-group btn btn-warning myselect">
-					<button type="button" id="btnSubmit" class="btn btn-danger myselect">Save</button>
+                <div class="form-group btn btn-secondary myselect">
+                    <label for="textKey">Key</label><br />
+                    <input type="password" id="textKey" style="width:220px" />
                 </div>
+                <br />
+				<button type="button" id="btnSubmit" class="btn btn-danger myselect">Save</button>
+                <br /><br /><br /><br />
+				<div style="text-align:center" class="btn btn-warning myselect">
+					<span class="label label-info" id="ttcLabel"></span>
+				</div>
             </section>
             <div style="text-align:center">
                 <img src="./Resources/Lights/off.gif" id="imgLights" />
-				<br />
-				<span class="label label-info" id="ttcLabel"></span>
 			
             </div>
         </div>
