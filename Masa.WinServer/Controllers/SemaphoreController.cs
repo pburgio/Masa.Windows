@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace IoT_Server.Controllers
@@ -14,7 +16,8 @@ namespace IoT_Server.Controllers
     {
         protected static IDictionary<string, SemaphoreStatus> semStatus = new Dictionary<string, SemaphoreStatus>();
         protected static IDictionary<string, SemaphoreCtrl> semCtrl = new Dictionary<string, SemaphoreCtrl>();
-        
+        protected int SemResetTimeoutSec = 5;
+
         [Route("api/semaphore/{semId}/status")]
         [HttpPost]
         //[RequireHttps]
@@ -27,9 +30,17 @@ namespace IoT_Server.Controllers
             //       !string.Equals(semId, User.Identity.Name))
             //    return Unauthorized();
 
-            if (semStatus.ContainsKey(semId))
-                semStatus.Remove(semId);
+            if (status == null)
+                return BadRequest();
+
+            status.LastUpdateUTC = DateTime.UtcNow;
+            lock (semStatus)
+            {
+                if (semStatus.ContainsKey(semId))
+                    semStatus.Remove(semId);
+            }
             semStatus.Add(semId, status);
+
 
             //LogsController.Log("Semaphore '" + semId + " changed its status");
 
@@ -44,13 +55,17 @@ namespace IoT_Server.Controllers
             if (string.IsNullOrEmpty(semId))
                 return BadRequest();
 
-            if (!semStatus.ContainsKey(semId))
-                semStatus.Add(semId, new SemaphoreStatus()
-                {
-                    CtrlType = SemaporeMaster.Unknown
-                });
-
+            lock (semStatus)
+            {
+                if (!semStatus.ContainsKey(semId))
+                    semStatus.Add(semId, new SemaphoreStatus());
+            }
             var ret = semStatus[semId];
+
+            // If we don't hear anything for SemResetTimeoutSec, let's switch it off
+            if ((DateTime.UtcNow - ret.LastUpdateUTC).TotalSeconds > SemResetTimeoutSec)
+                semStatus[semId].Reset();
+
             return Ok(ret);
         } // Status_Get
 
@@ -63,8 +78,11 @@ namespace IoT_Server.Controllers
             if (string.IsNullOrEmpty(ctrl.Key) || !string.Equals(ConfigurationManager.AppSettings["Key"], ctrl.Key))
                 return Unauthorized();
 
-            if (semCtrl.ContainsKey(semId))
-                semCtrl.Remove(semId);
+            lock (semCtrl)
+            {
+                if (semCtrl.ContainsKey(semId))
+                    semCtrl.Remove(semId);
+            }
 
             ctrl.Key = string.Empty; // Not to shout our pwd all around the world...
             semCtrl.Add(semId, ctrl);
